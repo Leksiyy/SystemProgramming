@@ -1,28 +1,45 @@
 ﻿namespace SystemProgramming;
-
+ 
 class Program
 {
     static void Main(string[] args)
     {
-        ParameterizedThreadStart threadStart = new ParameterizedThreadStart(Method2);
-        Thread thread = new Thread(Method1);
-        Thread thread2 = new Thread(Method2);
-        Console.ReadLine();
-    }
-
-    static void Method1()
-    {
-        for (int i = 0; i < 1000; i++)
+        Task task = Task.Factory.StartNew(() =>
         {
-            Console.WriteLine(i + "\n");
-        }
+            var list = CalculatePrimes(1000);
+            foreach (var a in list)
+            {
+                Console.WriteLine(a);
+            }
+        });
+        
+        task.Wait();
+        Console.WriteLine("Main end");
     }
-
-    static void Method2(object o)
+ 
+    static List<int> CalculatePrimes(int limit)
     {
-        for (int i = 0; i < 1000; i++)
+        List<int> primes = new List<int>();
+
+        for (int num = 2; num <= limit; num++) // начинаю с 2 потому что 1 не являеься простым числом
         {
-            Console.WriteLine("\t\t\t" + o + "\n");
+            bool isPrime = true;
+
+            for (int i = 2; i <= Math.Sqrt(num); i++)
+            {
+                if (num % i == 0)
+                {
+                    isPrime = false;
+                    break;
+                }
+            }
+
+            if (isPrime)
+            {
+                primes.Add(num);
+            }
         }
+
+        return primes;
     }
 }
