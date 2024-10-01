@@ -21,7 +21,6 @@ class Program
         thread1.Join();
         thread2.Join();
         
-        
         Console.WriteLine(bank.Balance);
     }
 }
